@@ -118,6 +118,13 @@ class HomepageTest extends BaseTestCase
             '3件挿入されていること'
         );
 
+        $response = $this->runApp('GET', '/api/contract/ids-detail?state=start&access_token=test');
+        $this->assertBody(
+            '{"status":{"status_code":200,"message":"ok"},"result":[{"id":"ID001","type":"contract","extra":null,"create_datetime":1000,"latest_state_event":{"state":"start","create_datetime":1000}},{"id":"ID002","type":"contract","extra":null,"create_datetime":2000,"latest_state_event":{"state":"start","create_datetime":2000}},{"id":"ID003","type":"contract","extra":null,"create_datetime":3000,"latest_state_event":{"state":"start","create_datetime":3000}}]}',
+            $response,
+            '3件挿入されていること'
+        );
+
         // 削除
         $response = $this->runApp('GET', '/api/clear?access_token=test', null, function($container){
             $container['dateTimeFactory'] = function($c) {

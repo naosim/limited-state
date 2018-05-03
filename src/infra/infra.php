@@ -1,12 +1,5 @@
 <?php
-class RepositoryImpl implements Repository {
-  private $pdo;
-  function __construct(
-    PDO $pdo
-  ){
-    $this->pdo = $pdo;
-  }
-
+class RepositoryImpl extends ReferRepositoryImpl implements Repository {
   function insert(StateCreateEvent $event) {
     $extra = $event->extraOption->map(function($v){ return $v->value; })->getOrNull();
     $stmt = $this->pdo->prepare('insert into insert_event (id, type, extra, create_datetime, latest_state, update_datetime) values (?, ?, ?, ?, \'none\', 0)');
@@ -23,21 +16,7 @@ class RepositoryImpl implements Repository {
     $stmt = $this->pdo->prepare('insert into update_event (id, type, state, create_datetime) values (?, ?, ?, ?)');
     $stmt->execute([$typeAndId->id->value, $typeAndId->type->value, $state->value, $createDateTime->value]);
   }
-  function find(TypeAndId $typeAndId):StateEntity {
-    $stmt = $this->pdo->prepare("SELECT * FROM insert_event WHERE id = ? AND type = ?");
-    $stmt->execute([$typeAndId->id->value, $typeAndId->type->value]);
-    $insertEvents = $stmt->fetchAll();
-
-    if(count($insertEvents) == 0) {
-      throw new RuntimeException("state not found");
-    }
-    if(count($insertEvents) > 1) {
-      throw new RuntimeException("state too many found");
-    }
-
-    return $this->recordToEntity($insertEvents[0]);
-  }
-
+  
   function delete(array $typeAndIdList) {
     $this->pdo->beginTransaction();
     try {
@@ -55,40 +34,7 @@ class RepositoryImpl implements Repository {
     }
     
   }
-
-  function findStateEventList(TypeAndId $typeAndId):StateEventList {
-    $stmt = $this->pdo->prepare("SELECT * FROM update_event WHERE id = ? AND type = ? ORDER BY create_datetime");
-    $stmt->execute([$typeAndId->id->value, $typeAndId->type->value]);
-    $updateEvents = $stmt->fetchAll();
-
-    $ary = [];
-    foreach($updateEvents as $updateEvent) {
-      $ary[] = new StateEvent(new State($updateEvent['state']), new CreateDateTime($updateEvent['create_datetime']));
-    }
-    return new StateEventList($ary);
-  }
-
-  function findAllIds(Type $type):array {
-    $stmt = $this->pdo->prepare("SELECT id FROM insert_event WHERE type = ?");
-    $stmt->execute([$type->value]);
-    return Stream::of($stmt->fetchAll())->map(function($v){ return new Id($v['id']); })->toArray();
-  }
-
-  function recordToEntity($record):StateEntity {
-    $typeAndId = new TypeAndId(new Type($record['type']), new Id($record['id']));
-    $extraOption = new ExtraOption($record['extra'] != null ? new Extra($record['extra']) : null);
-    $insertEventCreateDateTime = new CreateDateTime($record['create_datetime']);
-    $latestStateEvent = new StateEvent(new State($record['latest_state']), new CreateDateTime($record['update_datetime']));
   
-    return new StateEntity($typeAndId, $latestStateEvent, $extraOption, $insertEventCreateDateTime);
-  }
-
-  function findAllTypeAndIdBefore(CreateDateTime $targetDateTime):array {
-    $stmt = $this->pdo->prepare("SELECT id, type FROM insert_event WHERE create_datetime < ?");
-    $stmt->execute([$targetDateTime->value]);
-    return Stream::of($stmt->fetchAll())->map(function($v){ return new TypeAndId(new Type($v['type']), new Id($v['id'])); })->toArray();
-  }
-
   function createTable() {
     $this->pdo->exec("CREATE TABLE insert_event(
       id TEXT NOT NULL,

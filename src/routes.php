@@ -45,6 +45,14 @@ $app->get('/api/{type}/ids', function (Request $request, Response $response, arr
   return $this->responseFactory->ok($response, Stream::of($result)->map(function($v){ return $v->value; })->toArray());
 });
 
+$app->get('/api/{type}/ids-detail', function (Request $request, Response $response, array $args) {
+  $params = new CommonRequestParams($args, $request);
+
+  $result = $this->repository->findAll($params->getType());
+  
+  return $this->responseFactory->ok($response, Stream::of($result)->map(function($v){ return entityToObj($v); })->toArray());
+});
+
 $app->get('/api/clear', function (Request $request, Response $response, array $args) {
   $this->service->clear($this->get('settings')['application']['clear_days']);
   return $this->responseFactory->ok($response);

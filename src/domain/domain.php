@@ -98,56 +98,60 @@ class StateEventList {
 
 class CreateDateTime extends DateTimeVo {}
 
-  class StateCreateEvent {
-    private $typeAndId;
-    private $state;
-    private $extraOption;
-    private $createDateTime;
-  
-    function __construct(
-      TypeAndId $typeAndId, 
-      State $state,
-      ExtraOption $extraOption,
-      CreateDateTime $createDateTime
-      ) {
-      $this->typeAndId = $typeAndId;
-      $this->state = $state;
-      $this->extraOption = $extraOption;
-      $this->createDateTime = $createDateTime;
-    }
-  
-    function __get($name){
-      if($name == 'typeAndId') {
-        return $this->typeAndId;
-      }
-      if($name == 'id') {
-        return $this->typeAndId->id;
-      }
-      if($name == 'type') {
-        return $this->typeAndId->type;
-      }
-      if($name == 'state') {
-        return $this->state;
-      }
-      if($name == 'extraOption') {
-        return $this->extraOption;
-      }
-      if($name == 'createDateTime') {
-        return $this->createDateTime;
-      }
-    }
+class StateCreateEvent {
+  private $typeAndId;
+  private $state;
+  private $extraOption;
+  private $createDateTime;
+
+  function __construct(
+    TypeAndId $typeAndId, 
+    State $state,
+    ExtraOption $extraOption,
+    CreateDateTime $createDateTime
+    ) {
+    $this->typeAndId = $typeAndId;
+    $this->state = $state;
+    $this->extraOption = $extraOption;
+    $this->createDateTime = $createDateTime;
   }
 
-interface Repository {
-  function insert(StateCreateEvent $event);
-  function update(TypeAndId $typeAndId, State $state, CreateDateTime $createDateTime);
-  function delete(array $typeAndIdList);
+  function __get($name){
+    if($name == 'typeAndId') {
+      return $this->typeAndId;
+    }
+    if($name == 'id') {
+      return $this->typeAndId->id;
+    }
+    if($name == 'type') {
+      return $this->typeAndId->type;
+    }
+    if($name == 'state') {
+      return $this->state;
+    }
+    if($name == 'extraOption') {
+      return $this->extraOption;
+    }
+    if($name == 'createDateTime') {
+      return $this->createDateTime;
+    }
+  }
+}
 
+interface ReferRepository {
   function find(TypeAndId $typeAndId):StateEntity;
   function findStateEventList(TypeAndId $typeAndId):StateEventList;
   function findAllIds(Type $type):array;
   function findAllTypeAndIdBefore(CreateDateTime $targetDateTime):array;
 }
+
+
+interface Repository extends ReferRepository {
+  function insert(StateCreateEvent $event);
+  function update(TypeAndId $typeAndId, State $state, CreateDateTime $createDateTime);
+  function delete(array $typeAndIdList);
+}
+
 
 class Service {
   private $repository;
