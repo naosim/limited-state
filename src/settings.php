@@ -16,7 +16,8 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
         'application' => [
-            'clear_days' => 40
+            'clear_days' => 40,
+            'version'=>file_get_contents(__DIR__ . '/../version.txt')
         ]
     ],
 ];

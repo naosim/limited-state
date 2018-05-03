@@ -111,11 +111,31 @@ class HomepageTest extends BaseTestCase
         });
 
         // 挿入完了
-        $response = $this->runApp('GET', '/api/contract/ids?state=start&access_token=test');
+        $response = $this->runApp('GET', '/api/contract/ids?access_token=test');
         $this->assertBody(
             '{"status":{"status_code":200,"message":"ok"},"result":["ID001","ID002","ID003"]}',
             $response,
             '3件挿入されていること'
+        );
+
+        $response = $this->runApp('GET', '/api/contract/ids-detail?access_token=test');
+        $this->assertBody(
+            '{"status":{"status_code":200,"message":"ok"},"result":[{"id":"ID001","type":"contract","extra":null,"create_datetime":1000,"latest_state_event":{"state":"start","create_datetime":1000}},{"id":"ID002","type":"contract","extra":null,"create_datetime":2000,"latest_state_event":{"state":"start","create_datetime":2000}},{"id":"ID003","type":"contract","extra":null,"create_datetime":3000,"latest_state_event":{"state":"start","create_datetime":3000}}]}',
+            $response,
+            '3件挿入されていること'
+        );
+
+        $response = $this->runApp('GET', '/api/count?access_token=test');
+        $this->assertBody(
+            '{"status":{"status_code":200,"message":"ok"},"result":3}',
+            $response,
+            'レコード3件'
+        );
+        $response = $this->runApp('GET', '/count');
+        $this->assertBody(
+            '{"status":{"status_code":200,"message":"ok"},"result":3}',
+            $response,
+            'トークンなしでレコード3件'
         );
 
         // 削除
