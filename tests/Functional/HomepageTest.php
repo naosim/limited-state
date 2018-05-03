@@ -131,6 +131,12 @@ class HomepageTest extends BaseTestCase
             $response,
             'レコード3件'
         );
+        $response = $this->runApp('GET', '/count');
+        $this->assertBody(
+            '{"status":{"status_code":200,"message":"ok"},"result":3}',
+            $response,
+            'トークンなしでレコード3件'
+        );
 
         // 削除
         $response = $this->runApp('GET', '/api/clear?access_token=test', null, function($container){
