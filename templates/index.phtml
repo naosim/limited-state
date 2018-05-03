@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>LimtedState</title>
+        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <style>
+            body {
+                margin: 50px 0 0 0;
+                padding: 0;
+                width: 100%;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                text-align: center;
+                color: #aaa;
+                font-size: 18px;
+            }
+
+            h1 {
+                color: #719e40;
+                letter-spacing: -3px;
+                font-family: 'Lato', sans-serif;
+                font-size: 100px;
+                font-weight: 200;
+                margin-bottom: 0;
+            }
+            .contents {
+                text-align: left;
+                max-width: 700px;
+                margin: 0px auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>LimtedState</h1>
+        <div>managed state for one month</div>
+        <div class="contents">
+            <h2>APIs</h2>
+            <ul>
+                <li><code>/api/{type}/id/{id}/insert?state=[state]&extra=[extra]&access_token=[access_token]</code></li>
+                <li><code>/api/{type}/id/{id}/update?state=[state]&access_token=[access_token]</code></li>
+                <li><code>/api/{type}/id/{id}?access_token=[access_token]</code></li>
+            </ul>
+        </div>
+        
+    </body>
+</html>
