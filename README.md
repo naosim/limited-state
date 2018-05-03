@@ -62,7 +62,7 @@ json | 必須 | 型 | value
 ---|---|---|---
 { | | object |
 &emsp;"status": { | o | object |
-&emsp;&emsp;"status_code":500, | o | number | HTTPステータスコードと同じ値が入る。異常系のため200以外
+&emsp;&emsp;"status_code":500, | o | number | HTTPステータスコードと同じ値が入る。異常系のため200以外
 &emsp;&emsp;"message": "ng" | o | string | "ng"固定
 &emsp;}, | | |
 &emsp;"error": { | o | object | エラーの詳細
@@ -75,6 +75,7 @@ json | 必須 | 型 | value
 ### 状態の追加
 #### リクエスト
 URL: `/api/{type}/ids/{id}/insert?state=[state]&extra=[extra]`
+
 パラメータ | 必須 | 説明
 ---|---|---
 type | o | typeとidで一意になる任意の値
