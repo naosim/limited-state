@@ -50,13 +50,13 @@ json | 必須 | 型 | value
 &emsp;&emsp;"status_code":200, | o | number | 200固定
 &emsp;&emsp;"message": "ok" | o | string | "ok"固定
 &emsp;}, | | |
-&emsp;"result": * | o | any | APIに応じた結果が入る。下記APIごとのレスポンスはこの値部分のみを記す
+&emsp;"result": * | o | any | APIに応じた結果が入る。下記APIごとのレスポンスはこの値部分のみを記す
 } | | |
 
   - 下記APIごとの仕様ではresultの値を記す
 - 異常系
   - ステータスコード:200以外
-  - ボディ: `{"status":{"status_code":#スタータスコードと同じ値#,"message":"ng"},"error":{"class":"#例外クラス名#","message":"#例外メッセージ#"}}`
+  - ボディ:
 
 json | 必須 | 型 | value
 ---|---|---|---
@@ -66,7 +66,7 @@ json | 必須 | 型 | value
 &emsp;&emsp;"message": "ng" | o | string | "ng"固定
 &emsp;}, | | |
 &emsp;"error": { | o | object | エラーの詳細
-&emsp;&emsp;"class": "RuntimeException" | o | string | 例外クラス名
+&emsp;&emsp;"class": "RuntimeException" | o | string | 例外クラス名
 &emsp;&emsp;"message": "not found" | o | string | 例外メッセージ
 &emsp;} | | |
 } | | |
@@ -86,7 +86,7 @@ extra | | 自由項目
 ##### 正常
 json | 必須 | 型 | value
 ---|---|---|---
-"ok" | o | string | "ok"固定
+"ok" | o | string | "ok"固定
 
 
 ##### 異常
@@ -107,7 +107,7 @@ state | o | 任意の状態
 ##### 正常
 json | 必須 | 型 | value
 ---|---|---|---
-"ok" | o | string | "ok"固定
+"ok" | o | string | "ok"固定
 
 ##### 異常
 - 必須項目が無い
@@ -149,9 +149,9 @@ URL: `/api/{type}/ids`
 ##### 正常
 json | 必須 | 型 | value
 ---|---|---|---
-[ | o | array | IDの配列。数は0以上。ヒットしなかった場合は0
-&emsp;"ID001" | o | string | ID
-] | | |
+[ | o | array | IDの配列。数は0以上。ヒットしなかった場合は0
+&emsp;"ID001" | o | string | ID
+] | | |
 
 ヒットしたIDがリストで取れる  
 ヒットしなかった場合は空リストを返す
