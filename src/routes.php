@@ -81,6 +81,11 @@ $app->get('/count', function (Request $request, Response $response, array $args)
   return $this->responseFactory->ok($response, $result);
 });
 
+$app->get('/version', function (Request $request, Response $response) {
+  $version = $this->get('settings')['application']['version'];
+  return $this->responseFactory->ok($response, $version);
+});
+
 $app->get('/', function (Request $request, Response $response) {
   return $this->renderer->render($response, 'index.phtml');
 });
