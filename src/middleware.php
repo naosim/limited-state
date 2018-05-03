@@ -45,6 +45,7 @@ $app->add(function ($request, $response, $next) {
   return $this->mqPdoFactory->getPDO(function($pdo) use($request, $response, $next) {
     $this['pdo'] = $pdo;
     $this['repository'] = new RepositoryImpl($pdo);
+    $this['referRepository'] = new ReferRepositoryImpl($pdo);
     $this['service'] = new Service($this['repository'], $this->dateTimeFactory);
     return $next($request, $response);
   });
