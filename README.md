@@ -96,16 +96,21 @@ URL: `/api/{type}/ids/{id}`
 
 key | 必須 | 型 | value
 ---|---|---|---
-id | o | string | 見つかった状態のid
-type | o | string | 見つかった状態のtype
-extra | | string | 状態の追加時に指定した自由項目。無い場合はnull
-create_datetime | o | number | 追加した日時
-latest_state_event | o | string | 最新の状態
-latest_state_event.state | o | string | 最新の状態
-latest_state_event.create_datetime | o | number | 最新の状態になった日時
-state_event_list | o | array | 過去の状態イベントリスト(日時の昇順)。必ず1つ以上ある
-state_event_list[n].state | o | string | 状態
-state_event_list[n].create_datetime | o | number | 日時
+{ | |object |
+&emsp;"id": "ID001", | o | string | 見つかった状態のid
+&emsp;"type": "contract", | o | string | 見つかった状態のtype
+&emsp;"extra": null, | | string | 状態の追加時に指定した自由項目。無い場合はnull
+&emsp;"create_datetime": 0, | o | number | 最初に生成された日時
+&emsp;"latest_state_event": { | o | string | 最新の状態
+&emsp;&emsp;"state": "start", | o | string | 最新の状態
+&emsp;&emsp;"create_datetime":10 | o | number | 最新の状態になった日時
+&emsp;"state_event_list": [ | o | array | 過去の状態イベントリスト(日時の昇順)。要素の数は1以上
+&emsp;&emsp;{ | | object | 状態と日時
+&emsp;&emsp;&emsp;"state": "start", | o | string | 状態
+&emsp;&emsp;&emsp;"create_datetime":0 | o | number | 日時
+&emsp;&emsp;} |
+&emsp;] |
+} |
 
 
 ##### 異常
