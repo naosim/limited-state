@@ -64,11 +64,12 @@ extra | | 自由項目
 
 ##### 異常
 - 必須項目が無い
-- typeとidの組み合わせが重複
+- typeとidの組み合わせが重複
 
 ### 状態の更新
 #### リクエスト
 URL: `/api/{type}/ids/{id}/insert?update=[state]`
+
 パラメータ | 必須 | 説明
 ---|---|---
 type | o | 更新したいtype
@@ -81,7 +82,7 @@ state | o | 任意の状態
 
 ##### 異常
 - 必須項目が無い
-- 更新するデータがヒットしない
+- 更新するデータがヒットしない
 
 ### 状態の取得
 #### リクエスト
@@ -96,9 +97,9 @@ URL: `/api/{type}/ids/{id}`
 key | 必須 | 型 | value
 ---|---|---|---
 id | o | string | 見つかった状態のid
-type | o | string | 見つかった状態のtype
-extra | | string | 状態の追加時に指定した自由項目。無い場合はnull
-create_datetime | o | number | 追加した日時
+type | o | string | 見つかった状態のtype
+extra | | string | 状態の追加時に指定した自由項目。無い場合はnull
+create_datetime | o | number | 追加した日時
 latest_state_event | o | string | 最新の状態
 latest_state_event.state | o | string | 最新の状態
 latest_state_event.create_datetime | o | number | 最新の状態になった日時
@@ -108,9 +109,9 @@ state_event_list[n].create_datetime | o | number | 日時
 
 
 ##### 異常
-- データがヒットしない
+- データがヒットしない
 
-### タイプに属するID一覧の取得
+### タイプに属するID一覧の取得
 #### リクエスト
 URL: `/api/{type}/ids`
 #### レスポンス
