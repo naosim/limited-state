@@ -46,6 +46,12 @@ class ReferRepositoryImpl implements ReferRepository {
     return Stream::of($stmt->fetchAll())->map(function($v){ return new Id($v['id']); })->toArray();
   }
 
+  function count(): int {
+    $stmt = $this->pdo->prepare("SELECT count(*) FROM insert_event");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+
   function recordToEntity($record):StateEntity {
     $typeAndId = new TypeAndId(new Type($record['type']), new Id($record['id']));
     $extraOption = new ExtraOption($record['extra'] != null ? new Extra($record['extra']) : null);
