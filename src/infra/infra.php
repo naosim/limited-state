@@ -1,4 +1,7 @@
 <?php
+
+use \naosim\Stream;
+
 class RepositoryImpl extends ReferRepositoryImpl implements Repository {
   function insert(StateCreateEvent $event) {
     $extra = $event->extraOption->map(function($v){ return $v->value; })->getOrNull();

@@ -19,7 +19,7 @@ $container['logger'] = function ($c) {
 };
 
 $container['mqPdoFactory'] = function($c) {
-  return new SQLitePDOFactory(__DIR__ . '/../my_sqlite_db.db', 'lock');
+  return new SQLitePDOFactory('lock');
 };
 
 $container['dateTimeFactory'] = function($c) {

@@ -1,4 +1,6 @@
 <?php
+use \naosim\Option;
+use \naosim\Stream;
 
 class StateEntity {
   private $typeAndId;

@@ -1,7 +1,7 @@
 <?php
 use Slim\Http\Request;
 use Slim\Http\Response;
-
+use \naosim\Stream;
 
 
 $app->get('/api/{type}/ids/{id}/insert', function (Request $request, Response $response, array $args) {
@@ -67,16 +67,6 @@ $app->get('/api/count', function (Request $request, Response $response, array $a
   $params = new CommonRequestParams($args, $request);
 
   $result = $this->referRepository->count();
-  
-  return $this->responseFactory->ok($response, $result);
-});
-
-$app->get('/count', function (Request $request, Response $response, array $args) {
-  // api配下でないため、自力でPDOを作る
-  $result = $this->mqPdoFactory->getPDO(function($pdo) use($request, $response) {
-    $r = new ReferRepositoryImpl($pdo);
-    return $r->count();
-  });
   
   return $this->responseFactory->ok($response, $result);
 });

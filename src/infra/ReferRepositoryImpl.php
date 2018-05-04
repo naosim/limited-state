@@ -1,4 +1,8 @@
 <?php
+
+use \naosim\Stream;
+
+
 class ReferRepositoryImpl implements ReferRepository {
   protected $pdo;
   function __construct(

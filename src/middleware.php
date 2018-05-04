@@ -17,19 +17,9 @@ $app->add(function ($request, $response, $next) {
 
   $accessToken = file_get_contents($accessTokenFile);
 
-  $list = [
-    $request->getHeader('access_token'),
-    $request->getQueryParam('access_token')
-  ];
-  $t = null;
-  foreach($list as $value) {
-    if($value != null) {
-      $t = $value;
-    }
-  }
-  if($t == null) {
-    throw new RuntimeException('access_token required');
-  } else if($t != $accessToken) {
+  $t = getAccessTokenFromRequest($request);
+  
+  if(!isTestMode($t) && $t != $accessToken) {
     throw new RuntimeException('unmatch access_token');
   }
 	$response = $next($request, $response);
@@ -41,8 +31,10 @@ $app->add(function ($request, $response, $next) {
   if(strpos($request->getUri()->getPath(), 'api') === false) {
     return $next($request, $response);
   }
-  
-  return $this->mqPdoFactory->getPDO(function($pdo) use($request, $response, $next) {
+
+  $accessToken = getAccessTokenFromRequest($request);
+  $dbFileName = isTestMode($accessToken) ? __DIR__ . '/../test_db.db' : __DIR__ . '/../my_sqlite_db.db';
+  return $this->mqPdoFactory->getPDO($dbFileName, function($pdo) use($request, $response, $next) {
     $this['pdo'] = $pdo;
     $this['repository'] = new RepositoryImpl($pdo);
     $this['referRepository'] = new ReferRepositoryImpl($pdo);
