@@ -8,20 +8,6 @@ $app->add(function ($request, $response, $next) {
 	return $response;
 });
 
-function getAccessTokenFromRequest($request) {
-  if($request->getQueryParam('access_token') != null) {
-    return $request->getQueryParam('access_token');
-  }
-  if($request->getHeader('access_token') != null) {
-    return $request->getHeader('access_token');
-  }
-  return null;
-}
-
-function isTestMode(string $accessToken) {
-  return $accessToken == null || $accessToken == 'test';
-}
-
 // auth
 $app->add(function ($request, $response, $next) {
   $accessTokenFile = __DIR__ . '/../access_token.txt';

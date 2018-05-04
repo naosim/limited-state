@@ -82,3 +82,17 @@ class ResponseFactory {
     return $response->withJson($result, 500);
   }
 }
+
+function getAccessTokenFromRequest($request) {
+  if($request->getQueryParam('access_token') != null) {
+    return $request->getQueryParam('access_token');
+  }
+  if($request->getHeader('access_token') != null) {
+    return $request->getHeader('access_token');
+  }
+  return null;
+}
+
+function isTestMode(string $accessToken) {
+  return $accessToken == null || $accessToken == 'test';
+}
