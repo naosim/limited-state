@@ -71,16 +71,6 @@ $app->get('/api/count', function (Request $request, Response $response, array $a
   return $this->responseFactory->ok($response, $result);
 });
 
-$app->get('/count', function (Request $request, Response $response, array $args) {
-  // api配下でないため、自力でPDOを作る
-  $result = $this->mqPdoFactory->getPDO(function($pdo) use($request, $response) {
-    $r = new ReferRepositoryImpl($pdo);
-    return $r->count();
-  });
-  
-  return $this->responseFactory->ok($response, $result);
-});
-
 $app->get('/version', function (Request $request, Response $response) {
   $version = $this->get('settings')['application']['version'];
   return $this->responseFactory->ok($response, $version);
