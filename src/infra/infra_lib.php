@@ -1,19 +1,16 @@
 <?php
 class SQLitePDOFactory {
-  private $dbFileName;
   private $lockFileName;
 
   function __construct(
-    string $dbFileName, 
     string $lockFileName
   ){
-    $this->dbFileName = $dbFileName;
     $this->lockFileName = $lockFileName;
   }
 
-  function getPDOWithoutLock() {
+  function getPDOWithoutLock(string $dbFileName) {
     // 接続
-    $pdo = new PDO('sqlite:' . $this->dbFileName);
+    $pdo = new PDO('sqlite:' . $dbFileName);
   
     // SQL実行時にもエラーの代わりに例外を投げるように設定
     // (毎回if文を書く必要がなくなる)
@@ -25,9 +22,9 @@ class SQLitePDOFactory {
     return $pdo;
   }
 
-  function getPDO($funcWithPDO) {
-    return $this->lock(function() use($funcWithPDO) {
-      $pdo = $this->getPDOWithoutLock();
+  function getPDO(string $dbFileName, $funcWithPDO) {
+    return $this->lock(function() use($dbFileName, $funcWithPDO) {
+      $pdo = $this->getPDOWithoutLock($dbFileName);
       return $funcWithPDO($pdo);
     });
   }
@@ -83,24 +80,5 @@ class ResponseFactory {
       'error'=>['class'=>get_class($exception), 'message'=>$exception->getMessage()]
     ];
     return $response->withJson($result, 500);
-  }
-}
-
-class AccessToken extends StringVo {}
-
-interface AuthComponent {
-  function auth(AccessToken $accessToken):bool;
-}
-
-class AuthComponentByFile implements AuthComponent {
-  function auth(?AccessToken $accessToken):bool {
-    $accessTokenInFile = file_get_contents('access_token.txt');
-    if($accessTokenInFile === false) {
-      return true;
-    }
-    if($accessTokenInFile === $accessToken->value) {
-      return true;
-    }
-    return false;
   }
 }
