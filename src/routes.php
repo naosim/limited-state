@@ -1,7 +1,7 @@
 <?php
 use Slim\Http\Request;
 use Slim\Http\Response;
-
+use \naosim\Stream;
 
 
 $app->get('/api/{type}/ids/{id}/insert', function (Request $request, Response $response, array $args) {
